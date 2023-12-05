@@ -18,9 +18,6 @@ class Package
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $command = null;
-
     #[ORM\OneToMany(mappedBy: 'id_pkg', targetEntity: ExtensionPackage::class)]
     private Collection $extensionPackages;
 
@@ -34,7 +31,10 @@ class Package
     private ?string $url = null;
 
     #[ORM\Column]
-    private ?bool $checked = null;
+    private ?bool $checked = false;
+
+    #[ORM\Column(length: 3000, nullable: true)]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -60,17 +60,7 @@ class Package
         return $this;
     }
 
-    public function getCommand(): ?string
-    {
-        return $this->command;
-    }
 
-    public function setCommand(string $command): static
-    {
-        $this->command = $command;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, ExtensionPackage>
@@ -182,6 +172,18 @@ class Package
     public function setChecked(bool $checked): static
     {
         $this->checked = $checked;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

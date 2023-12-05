@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,8 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     #[Route('/main', name: 'app_main')]
-    public function index(): Response
+    public function index(ApiService $service): Response
     {
+        
+        $service->fetchApi(2);
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
         ]);
