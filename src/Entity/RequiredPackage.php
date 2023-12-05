@@ -19,6 +19,9 @@ class RequiredPackage
     #[ORM\ManyToOne(inversedBy: 'requiredPackages')]
     private ?Package $dependencer = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $type_requirement = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class RequiredPackage
     public function setDependencer(?Package $dependencer): static
     {
         $this->dependencer = $dependencer;
+
+        return $this;
+    }
+
+    public function getTypeRequirement(): ?string
+    {
+        return $this->type_requirement;
+    }
+
+    public function setTypeRequirement(string $type_requirement): static
+    {
+        $this->type_requirement = $type_requirement;
 
         return $this;
     }

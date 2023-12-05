@@ -18,10 +18,8 @@ class Extension
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $command = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_ext', targetEntity: ExtensionPackage::class)]
+    #[ORM\OneToMany(mappedBy: 'extension', targetEntity: ExtensionPackage::class)]
     private Collection $extensionPackages;
 
     public function __construct()
@@ -53,17 +51,6 @@ class Extension
         return $this;
     }
 
-    public function getCommand(): ?string
-    {
-        return $this->command;
-    }
-
-    public function setCommand(string $command): static
-    {
-        $this->command = $command;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, ExtensionPackage>
@@ -77,7 +64,7 @@ class Extension
     {
         if (!$this->extensionPackages->contains($extensionPackage)) {
             $this->extensionPackages->add($extensionPackage);
-            $extensionPackage->setIdExt($this);
+            $extensionPackage->setExtension($this);
         }
 
         return $this;
@@ -87,8 +74,8 @@ class Extension
     {
         if ($this->extensionPackages->removeElement($extensionPackage)) {
             // set the owning side to null (unless already changed)
-            if ($extensionPackage->getIdExt() === $this) {
-                $extensionPackage->setIdExt(null);
+            if ($extensionPackage->getExtension() === $this) {
+                $extensionPackage->setExtension(null);
             }
         }
 

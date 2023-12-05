@@ -74,7 +74,7 @@ class Package
     {
         if (!$this->extensionPackages->contains($extensionPackage)) {
             $this->extensionPackages->add($extensionPackage);
-            $extensionPackage->setIdPkg($this);
+            $extensionPackage->setPackage($this);
         }
 
         return $this;
@@ -84,8 +84,8 @@ class Package
     {
         if ($this->extensionPackages->removeElement($extensionPackage)) {
             // set the owning side to null (unless already changed)
-            if ($extensionPackage->getIdPkg() === $this) {
-                $extensionPackage->setIdPkg(null);
+            if ($extensionPackage->getPackage() === $this) {
+                $extensionPackage->setPackage(null);
             }
         }
 
