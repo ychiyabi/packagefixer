@@ -13,7 +13,7 @@ class MainController extends AbstractController
     public function index(ApiService $service): Response
     {
         
-        $service->getPackageDetails("aws/aws-sdk-php");
+        $service->getPackageDetails("phpunit/php-invoker");
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
         ]);

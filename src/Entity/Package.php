@@ -36,11 +36,15 @@ class Package
     #[ORM\Column(length: 3000, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\OneToMany(mappedBy: 'package', targetEntity: Version::class)]
+    private Collection $versions;
+
     public function __construct()
     {
         $this->extensionPackages = new ArrayCollection();
         $this->packageComposers = new ArrayCollection();
         $this->requiredPackages = new ArrayCollection();
+        $this->versions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +188,36 @@ class Package
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Version>
+     */
+    public function getVersions(): Collection
+    {
+        return $this->versions;
+    }
+
+    public function addVersion(Version $version): static
+    {
+        if (!$this->versions->contains($version)) {
+            $this->versions->add($version);
+            $version->setPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVersion(Version $version): static
+    {
+        if ($this->versions->removeElement($version)) {
+            // set the owning side to null (unless already changed)
+            if ($version->getPackage() === $this) {
+                $version->setPackage(null);
+            }
+        }
 
         return $this;
     }
