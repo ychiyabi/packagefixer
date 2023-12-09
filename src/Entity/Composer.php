@@ -28,6 +28,9 @@ class Composer
     #[ORM\OneToMany(mappedBy: 'composer', targetEntity: PackageComposer::class)]
     private Collection $packageComposers;
 
+    #[ORM\Column(length: 255)]
+    private ?string $file_name = null;
+
     public function __construct()
     {
         $this->packageComposers = new ArrayCollection();
@@ -100,6 +103,18 @@ class Composer
                 $packageComposer->setComposer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->file_name;
+    }
+
+    public function setFileName(string $file_name): static
+    {
+        $this->file_name = $file_name;
 
         return $this;
     }

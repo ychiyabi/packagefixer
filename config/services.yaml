@@ -6,6 +6,7 @@
 parameters:
     apiUrl: 'https://packagist.org/explore/popular.json'
     apiSpecificPackage: 'https://packagist.org/packages/'
+    composers_directory: '%kernel.project_dir%/public/uploads/composers'
 
 services:
     # default configuration for services in *this* file
@@ -24,6 +25,11 @@ services:
 
 
     App\Service\ApiService:
+
+    App\Service\ComposerService:
+        arguments:
+            $targetDirectory: '%composers_directory%'
+        
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

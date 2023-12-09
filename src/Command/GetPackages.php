@@ -35,7 +35,7 @@ class GetPackages extends Command{
         $this->service->fetchApi($input->getArgument('page_number'));
 
         $output->writeln([
-            'Your argument is',
+            'page fetched ==>',
             '============',
             ''.$input->getArgument('page_number'),
         ]);
