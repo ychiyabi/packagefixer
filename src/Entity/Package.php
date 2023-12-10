@@ -15,7 +15,7 @@ class Package
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'id_pkg', targetEntity: ExtensionPackage::class)]
@@ -33,7 +33,7 @@ class Package
     #[ORM\Column]
     private ?bool $checked = false;
 
-    #[ORM\Column(length: 3000, nullable: true)]
+    #[ORM\Column(length: 9000, nullable: true)]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'package', targetEntity: Version::class)]

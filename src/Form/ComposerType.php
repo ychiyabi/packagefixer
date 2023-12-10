@@ -15,8 +15,8 @@ class ComposerType extends AbstractType
     {
         $builder
             // ...
-            ->add('file_name', FileType::class, [
-                'label' => 'Composer (PDF file)',
+            ->add('file_name', FileType::class, ['attr' => ['class' => 'form-control form-control-lg']], [
+                'label' => "",
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => true,

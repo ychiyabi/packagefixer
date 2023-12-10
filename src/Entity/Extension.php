@@ -22,9 +22,13 @@ class Extension
     #[ORM\OneToMany(mappedBy: 'extension', targetEntity: ExtensionPackage::class)]
     private Collection $extensionPackages;
 
+    #[ORM\OneToMany(mappedBy: 'extension', targetEntity: ExtensionComposer::class)]
+    private Collection $extensionComposers;
+
     public function __construct()
     {
         $this->extensionPackages = new ArrayCollection();
+        $this->extensionComposers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +80,36 @@ class Extension
             // set the owning side to null (unless already changed)
             if ($extensionPackage->getExtension() === $this) {
                 $extensionPackage->setExtension(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExtensionComposer>
+     */
+    public function getExtensionComposers(): Collection
+    {
+        return $this->extensionComposers;
+    }
+
+    public function addExtensionComposer(ExtensionComposer $extensionComposer): static
+    {
+        if (!$this->extensionComposers->contains($extensionComposer)) {
+            $this->extensionComposers->add($extensionComposer);
+            $extensionComposer->setExtension($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExtensionComposer(ExtensionComposer $extensionComposer): static
+    {
+        if ($this->extensionComposers->removeElement($extensionComposer)) {
+            // set the owning side to null (unless already changed)
+            if ($extensionComposer->getExtension() === $this) {
+                $extensionComposer->setExtension(null);
             }
         }
 

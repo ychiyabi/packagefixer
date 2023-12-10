@@ -20,6 +20,12 @@ class PackageComposer
     #[ORM\JoinColumn(nullable: false)]
     private ?Package $package = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $version = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $type_requirement = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +51,30 @@ class PackageComposer
     public function setPackage(?Package $package): static
     {
         $this->package = $package;
+
+        return $this;
+    }
+
+    public function getVersion(): ?string
+    {
+        return $this->version;
+    }
+
+    public function setVersion(string $version): static
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    public function getTypeRequirement(): ?string
+    {
+        return $this->type_requirement;
+    }
+
+    public function setTypeRequirement(string $type_requirement): static
+    {
+        $this->type_requirement = $type_requirement;
 
         return $this;
     }

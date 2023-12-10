@@ -86,11 +86,11 @@ class ApiService
 
         //ANCHOR - Requirement (package & extension treatements)
         foreach ($all_versions as $parent => $version) {
-            $php_version="*";
+            $php_version = "*";
             if (isset($version->require)) {
                 $attributes = array_keys((array)$version->require);
-                $this->verifyAttributes($attributes,$reduced_package);
-                if(isset($version->require->php)){
+                $this->verifyAttributes($attributes, $reduced_package);
+                if (isset($version->require->php)) {
                     $php_version = $version->require->php;
                 }
                 $this->insertRequiredPackage((array)$version->require, $reduced_package, 'require', $php_version, $parent);
@@ -98,7 +98,7 @@ class ApiService
 
             if (isset($version->{'require-dev'})) {
                 $attributes_dev = array_keys((array)$version->{'require-dev'});
-                $this->verifyAttributes($attributes_dev,$reduced_package);
+                $this->verifyAttributes($attributes_dev, $reduced_package);
                 $this->insertRequiredPackage((array)$version->{'require-dev'}, $reduced_package, 'require_dev', $php_version, $parent);
             }
         }
@@ -118,14 +118,15 @@ class ApiService
         return $extension;
     }
 
-    protected function insertExtensionPackage($extension,$package){
-        $extension_package = $this->db_handler->getRepository(ExtensionPackage::class)->findOneBy(['extension' => $extension->getId(),'package'=>$package->getId()]);
-        if(!$extension_package){
-        $ext_pkg=new ExtensionPackage();
-        $ext_pkg->setPackage($package);
-        $ext_pkg->setExtension($extension);
-        $this->db_handler->persist($ext_pkg);
-        $this->db_handler->flush();
+    protected function insertExtensionPackage($extension, $package)
+    {
+        $extension_package = $this->db_handler->getRepository(ExtensionPackage::class)->findOneBy(['extension' => $extension->getId(), 'package' => $package->getId()]);
+        if (!$extension_package) {
+            $ext_pkg = new ExtensionPackage();
+            $ext_pkg->setPackage($package);
+            $ext_pkg->setExtension($extension);
+            $this->db_handler->persist($ext_pkg);
+            $this->db_handler->flush();
         }
     }
 
@@ -160,12 +161,12 @@ class ApiService
     }
 
 
-    protected function verifyAttributes($attributes,$package)
+    protected function verifyAttributes($attributes, $package)
     {
 
         foreach ($attributes as $attribute) {
-            if (str_contains($attribute, "ext")) {
-                $this->insertExtensionPackage($this->insertExtension($attribute),$package);
+            if (str_contains($attribute, "ext-")) {
+                $this->insertExtensionPackage($this->insertExtension($attribute), $package);
             }
         }
     }

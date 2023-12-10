@@ -31,9 +31,13 @@ class Composer
     #[ORM\Column(length: 255)]
     private ?string $file_name = null;
 
+    #[ORM\OneToMany(mappedBy: 'composer', targetEntity: ExtensionComposer::class)]
+    private Collection $extensionComposers;
+
     public function __construct()
     {
         $this->packageComposers = new ArrayCollection();
+        $this->extensionComposers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,6 +119,36 @@ class Composer
     public function setFileName(string $file_name): static
     {
         $this->file_name = $file_name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExtensionComposer>
+     */
+    public function getExtensionComposers(): Collection
+    {
+        return $this->extensionComposers;
+    }
+
+    public function addExtensionComposer(ExtensionComposer $extensionComposer): static
+    {
+        if (!$this->extensionComposers->contains($extensionComposer)) {
+            $this->extensionComposers->add($extensionComposer);
+            $extensionComposer->setComposer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExtensionComposer(ExtensionComposer $extensionComposer): static
+    {
+        if ($this->extensionComposers->removeElement($extensionComposer)) {
+            // set the owning side to null (unless already changed)
+            if ($extensionComposer->getComposer() === $this) {
+                $extensionComposer->setComposer(null);
+            }
+        }
 
         return $this;
     }

@@ -1,9 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block body %}
 
-<h1>Adding a new product</h1>
-
+<div {{ react_component('Hello', { 'fullName': 5 }) }}>
+        Loading... <i class="fas fa-cog fa-spin fa-3x"></i>
+    </div>
+<div class="container w-50">
 {{ form_start(form) }}
-    {# ... #}
-
-    {{ form_row(form.file_name) }}
-    <input type="submit" value="upload">
+<div>
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+  <label class="form-check-label" for="flexSwitchCheckChecked">Upload file mode / Paste content mode</label>
+</div>
+  <h3 class="d-grid gap-2 col-8 mx-auto my-3">Select your composer.json file</h3>
+{{ form_row(form.file_name) }}
+</div>
 {{ form_end(form) }}
+<div class="d-grid gap-2 col-6 mx-auto my-3">
+  <button class="btn btn-success font-white" type="button">Upload composer</button>
+</div>
+</div>
+
+<div class="container w-25">
+
+<table class="table table-striped-columns table-info">
+  <thead>
+  <tr>
+      <th class="table-light" scope="col">Statistics</th>
+      
+    </tr>
+    <tr class="table-warning">
+      <td>Composer uploaded </td>
+      <td>55675</td>
+    </tr>
+    <tr class="table-success">
+      <td>Composer Resolved </td>
+      <td >55675</td>
+    </tr>
+    <tr>
+      <td >Popular package </td>
+      <td > Symfony</td>
+    </tr>
+  </thead>
+</table>
+
+</div>
+
+
+
+
+{% endblock %}
