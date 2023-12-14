@@ -18,6 +18,7 @@ class ComposerService
         private string $targetDirectory,
         private SluggerInterface $slugger,
         private EntityManagerInterface $db_handler,
+        private ApiService $service
     ) {
     }
 
@@ -47,7 +48,11 @@ class ComposerService
         if (isset($composer->getContent()['require'])) {
             foreach ($composer->getContent()['require'] as $package_extension => $version) {
                 $package_req = $this->db_handler->getRepository(Package::class)->findOneBy(['name' => $package_extension]);
+
                 if ($package_req) {
+                    /* if (!$package_req->isChecked()) {
+                        $this->service->getPackageDetails($package_req->getName());
+                    } */
                     $package_composer = new PackageComposer();
                     $package_composer->setComposer($composer);
                     $package_composer->setPackage($package_req);
