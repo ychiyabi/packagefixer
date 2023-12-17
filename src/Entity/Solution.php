@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SolutionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,8 +16,6 @@ class Solution
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 3000)]
-    private ?string $bash = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_delivery = null;
@@ -24,22 +24,21 @@ class Solution
     #[ORM\JoinColumn(nullable: false)]
     private ?Composer $composer = null;
 
+    #[ORM\OneToMany(mappedBy: 'solution', targetEntity: SolutionElement::class)]
+    private Collection $solutionElements;
+
+    public function __construct()
+    {
+        $this->solutionElements = new ArrayCollection();
+    }
+
+
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBash(): ?string
-    {
-        return $this->bash;
-    }
-
-    public function setBash(string $bash): static
-    {
-        $this->bash = $bash;
-
-        return $this;
-    }
 
     public function getDateDelivery(): ?\DateTimeInterface
     {
@@ -61,6 +60,36 @@ class Solution
     public function setComposer(Composer $composer): static
     {
         $this->composer = $composer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SolutionElement>
+     */
+    public function getSolutionElements(): Collection
+    {
+        return $this->solutionElements;
+    }
+
+    public function addSolutionElement(SolutionElement $solutionElement): static
+    {
+        if (!$this->solutionElements->contains($solutionElement)) {
+            $this->solutionElements->add($solutionElement);
+            $solutionElement->setSolution($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSolutionElement(SolutionElement $solutionElement): static
+    {
+        if ($this->solutionElements->removeElement($solutionElement)) {
+            // set the owning side to null (unless already changed)
+            if ($solutionElement->getSolution() === $this) {
+                $solutionElement->setSolution(null);
+            }
+        }
 
         return $this;
     }

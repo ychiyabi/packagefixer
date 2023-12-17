@@ -34,6 +34,13 @@ class Composer
     #[ORM\OneToMany(mappedBy: 'composer', targetEntity: ExtensionComposer::class)]
     private Collection $extensionComposers;
 
+    #[ORM\Column(length: 255)]
+    private ?string $php_version = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $operating_system = null;
+
+
     public function __construct()
     {
         $this->packageComposers = new ArrayCollection();
@@ -149,6 +156,30 @@ class Composer
                 $extensionComposer->setComposer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhpVersion(): ?string
+    {
+        return $this->php_version;
+    }
+
+    public function setPhpVersion(string $php_version): static
+    {
+        $this->php_version = $php_version;
+
+        return $this;
+    }
+
+    public function getOperatingSystem(): ?string
+    {
+        return $this->operating_system;
+    }
+
+    public function setOperatingSystem(string $operating_system): static
+    {
+        $this->operating_system = $operating_system;
 
         return $this;
     }
