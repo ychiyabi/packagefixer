@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Entity\Composer;
 use App\Entity\Extension;
 use App\Entity\ExtensionComposer;
+use App\Entity\PackageComposer;
+use App\Entity\RequiredPackage;
 use App\Entity\Solution;
 use App\Entity\SolutionElement;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,6 +41,24 @@ class SolutionService
             $solution_element->setSolution($solution);
             $this->db_handler->persist($solution_element);
             $this->db_handler->flush();
+        }
+    }
+
+    public function provideEssentialPackages(Composer $composer, Solution $solution)
+    {
+        $list_of_pkg = $this->db_handler->getRepository(PackageComposer::class)->findBy(["composer" => $composer->getId()]);
+        foreach ($list_of_pkg as $pkg) {
+            $packages = $this->db_handler->getRepository(RequiredPackage::class)->getRequiredPackages($pkg->getPackage()->getId(), $pkg->getVersion(), $composer->getPhpVersion());
+            foreach ($packages as $package) {
+                $solution_element = new SolutionElement();
+                $solution_element->setIdElement(($package->getId()));
+                $solution_element->setTypeElement("package");
+                $solution_element->setVersionElement($package->getVersion());
+                $solution_element->setSolution($solution);
+                $solution_element->setTypeRequirement($pkg->getTypeRequirement());
+                $this->db_handler->persist($solution_element);
+                $this->db_handler->flush();
+            }
         }
     }
 }

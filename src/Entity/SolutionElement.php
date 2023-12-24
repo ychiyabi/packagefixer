@@ -25,6 +25,9 @@ class SolutionElement
     #[ORM\Column(length: 255)]
     private ?string $version_element = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $type_requirement = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class SolutionElement
     public function setVersionElement(string $version_element): static
     {
         $this->version_element = $version_element;
+
+        return $this;
+    }
+
+    public function getTypeRequirement(): ?string
+    {
+        return $this->type_requirement;
+    }
+
+    public function setTypeRequirement(?string $type_requirement): static
+    {
+        $this->type_requirement = $type_requirement;
 
         return $this;
     }
