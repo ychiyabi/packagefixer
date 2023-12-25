@@ -23,10 +23,9 @@ class RequiredPackageRepository extends ServiceEntityRepository
 
     public function getRequiredPackages($package_id, $package_version, $php_version)
     {
-        $query = $this->getEntityManager()->createQuery("select * from App\Entity\RequiredPackage
-        where dependencer_id=:package_id
-        and parent_package_version like '%:package_version%' 
-        and php_version like '%:php_version%'")->setParameters(['package_id' => $package_id, 'package_version' => $package_version, 'php_version' => $php_version]);
+        $query = $this->getEntityManager()->createQuery("select p from App\Entity\RequiredPackage p
+        WHERE p.dependencer=:package_id AND p.parent_package_version like :package_version
+        AND p.php_version like :php_version")->setParameters(['package_id' => $package_id, 'package_version' => "%" . $package_version . "%", 'php_version' => "%" . $php_version . "%"]);
         return $query->getResult();
         /* $conn = $this->getEntityManager()->getConnection();
         $sql = "select * from required_package

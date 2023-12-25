@@ -19,12 +19,13 @@ class SolutionService
         $this->db_handler = $db_handler;
     }
 
-    protected function initiateSolution(Composer $composer): Solution
+    public function initiateSolution(Composer $composer): Solution
     {
         $solution = new Solution();
         $solution->setComposer($composer);
         $solution->setDateDelivery(new \Datetime);
-
+        $this->db_handler->persist($solution);
+        $this->db_handler->flush();
         return $solution;
     }
 
@@ -48,6 +49,7 @@ class SolutionService
     {
         $list_of_pkg = $this->db_handler->getRepository(PackageComposer::class)->findBy(["composer" => $composer->getId()]);
         foreach ($list_of_pkg as $pkg) {
+            //dd($pkg->getPackage()->getId());
             $packages = $this->db_handler->getRepository(RequiredPackage::class)->getRequiredPackages($pkg->getPackage()->getId(), $pkg->getVersion(), $composer->getPhpVersion());
             foreach ($packages as $package) {
                 $solution_element = new SolutionElement();

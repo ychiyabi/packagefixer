@@ -33,6 +33,8 @@ services:
         tags: [kernel.event_listener]
     App\EventSubscriber\JsonTexterSubscriber:
         tags: [kernel.event_listener]
+    App\EventSubscriber\ProvideSolutionSubscriber:
+        tags: [kernel.event_listener]
         
 
     # add more service definitions when explicit configuration is needed
