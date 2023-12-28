@@ -50,9 +50,9 @@ class ComposerService
                 $package_req = $this->db_handler->getRepository(Package::class)->findOneBy(['name' => $package_extension]);
 
                 if ($package_req) {
-                    /* if (!$package_req->isChecked()) {
+                    if (!$package_req->isChecked()) {
                         $this->service->getPackageDetails($package_req->getName());
-                    } */
+                    }
                     $package_composer = new PackageComposer();
                     $package_composer->setComposer($composer);
                     $package_composer->setPackage($package_req);

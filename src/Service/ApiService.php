@@ -101,6 +101,8 @@ class ApiService
                 $this->verifyAttributes($attributes_dev, $reduced_package);
                 $this->insertRequiredPackage((array)$version->{'require-dev'}, $reduced_package, 'require_dev', $php_version, $parent);
             }
+            $this->db_handler->clear();
+            $reduced_package = $this->db_handler->getRepository(Package::class)->findOneBy(['name' => $package]);
         }
 
         echo "im Done !";

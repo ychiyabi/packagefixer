@@ -49,8 +49,9 @@ class SolutionService
     {
         $list_of_pkg = $this->db_handler->getRepository(PackageComposer::class)->findBy(["composer" => $composer->getId()]);
         foreach ($list_of_pkg as $pkg) {
-            //dd($pkg->getPackage()->getId());
-            $packages = $this->db_handler->getRepository(RequiredPackage::class)->getRequiredPackages($pkg->getPackage()->getId(), $pkg->getVersion(), $composer->getPhpVersion());
+            $prepared_version = str_replace(".*", "", $pkg->getVersion());
+            $prepared_version = str_replace("^", "", $prepared_version);
+            $packages = $this->db_handler->getRepository(RequiredPackage::class)->getRequiredPackages($pkg->getPackage()->getId(), $prepared_version, $composer->getPhpVersion());
             foreach ($packages as $package) {
                 $solution_element = new SolutionElement();
                 $solution_element->setIdElement(($package->getId()));
