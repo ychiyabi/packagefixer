@@ -27,6 +27,10 @@ class Solution
     #[ORM\OneToMany(mappedBy: 'solution', targetEntity: SolutionElement::class)]
     private Collection $solutionElements;
 
+    #[ORM\Column]
+    private array $delivered_solution = [];
+
+
     public function __construct()
     {
         $this->solutionElements = new ArrayCollection();
@@ -90,6 +94,18 @@ class Solution
                 $solutionElement->setSolution(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDeliveredSolution(): array
+    {
+        return $this->delivered_solution;
+    }
+
+    public function setDeliveredSolution(array $delivered_solution): static
+    {
+        $this->delivered_solution = $delivered_solution;
 
         return $this;
     }

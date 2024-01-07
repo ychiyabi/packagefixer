@@ -15,11 +15,12 @@ class ProvideSolutionSubscriber implements EventSubscriberInterface
         $this->db_handler = $db_handler;
         $this->service = $service;
     }
-    public function onProvideSolutionEvent($event): void
+    public function onProvideSolutionEvent($event)
     {
         $solution = $this->service->initiateSolution($event->getComposer());
         $this->service->provideEssentialExtensions($event->getComposer(), $solution);
         $this->service->provideEssentialPackages($event->getComposer(), $solution);
+        return $this->service->makeFinalSolution($event->getComposer(), $solution);
     }
 
     public static function getSubscribedEvents(): array

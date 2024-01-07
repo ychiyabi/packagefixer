@@ -36,8 +36,10 @@ class JsonTexterSubscriber implements EventSubscriberInterface
         $json->setDateSubmit(new \DateTime());
         $json->setPhpVersion($event->getPhp());
         $json->setOperatingSystem($event->getOs());
+
         $this->db_handler->persist($json);
         $this->db_handler->flush();
+        $event->setComposer($json->getId());
         $this->service->analyzePackageComposer($json);
         $this->service->analyzeExtensionComposer($json);
         $event = new ProvideSolutionEvent($json);

@@ -10,6 +10,7 @@ class JsonTexterEvent extends Event
     private $text;
     private $php;
     private $os;
+    private int $composer;
 
     public function __construct(string $text, $os, $php)
     {
@@ -38,5 +39,25 @@ class JsonTexterEvent extends Event
     public function getPhp()
     {
         return $this->php;
+    }
+
+    /**
+     * Get the value of composer
+     */
+    public function getComposer()
+    {
+        return $this->composer;
+    }
+
+    /**
+     * Set the value of composer
+     *
+     * @return  self
+     */
+    public function setComposer($composer)
+    {
+        $this->composer = $composer;
+
+        return $this;
     }
 }
